@@ -1,0 +1,100 @@
+# Minimalis Conky 1.1 -- tested on Ubuntu 11.10
+# Author : Oktay Özcengiz
+# Email : denny.krishna108@gmail.com
+# Site : http://ubuntu-indonesia.com
+# Feel free to modity this script ;)
+# öZELLEŞTİREN  Oktay.Ozcengiz@gmail.com
+# Script içerisinde kullanılan simgeler font olarak http://wiltur.deviantart.com/#/d3ij3mi adresinden edilebilir.
+
+background yes
+font ubuntu:size=8
+xftfont ubuntu:size=8
+use_xft yes
+xftalpha 0.5
+update_interval 1.0
+total_run_times 0
+own_window yes
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+draw_shades yes
+draw_outline yes
+draw_borders no
+draw_graph_borders yes
+minimum_size 250
+maximum_width 220
+default_color ffffff
+default_shade_color 000000
+draw_outline no
+alignment top_right
+gap_x 10
+gap_y 25
+no_buffers yes
+cpu_avg_samples 2
+override_utf8_locale yes
+uppercase no
+use_spacer none
+
+ # color1 606060				#Gris
+  color2 000000			#Near black
+TEXT
+${font ubuntu:size=25:bold}${time %H:%M}${font}
+${voffset -33}${goto 115}${font ubuntu:size=11:bold}${time %d %B %G}${font}
+${voffset -2}${goto 115}${font ubuntu:size=11:bold}${time %A}${font}
+
+${font ConkySymbols:size=12}o${font} $alignr ${exec lsb_release -d -s} (${exec lsb_release -c -s})
+#${font size=10:style=Bold}  SİSTEM»${font} 
+# Distro: ${goto 125}$alignr ${exec lsb_release -d -s} (${exec lsb_release -c -s})
+Kernel: $alignr $kernel $machine
+Uptime: $alignr $uptime_short
+Load: $alignr $loadavg
+$alignc${cpugraph 15,200 FF6600 f2f2f2}
+
+${font ConkySymbols:size=12}f${font} $alignr${freq 1}MHz
+#${font size=10:style=Bold} İŞLEMCİLER»${font}
+CPU 1: ${cpubar cpu0 4,155}$alignr${cpu cpu0}%
+CPU 2: ${cpubar cpu1 4,155}$alignr${cpu cpu1}%
+Temp: $alignr${hwmon temp 1}°C
+# CPU freqency:  ${goto 125}$alignr${freq 1}MHz
+Nvida:  $alignr${execi 60 nvidia-settings -query GPUCoreTemp | perl -ne 'print $1 if /GPUCoreTemp.*?: (\d+)./;'} °C
+
+${font ConkySymbols:size=12}j${font}        ${membar 4,75} $alignr$mem/$memmax - $memperc% 
+#${font size=10:style=Bold} BELLEK»${font}
+# RAM: ${membar 4,75} $alignr$mem/$memmax - $memperc% 
+Swap: ${swapbar 4,75} $alignr$swap/$swapmax - $swapperc%
+Processes: $alignr $processes
+Running: $alignr $running_processes
+${voffset 8}${font ConkySymbols:size=14}N${font} $alignc ${goto 135} ${alignr}MEM   ${alignr}CPU
+#${font} ${font size=10:style=Bold}  PROGRAMLAR${font} $alignc ${goto 135} ${alignr}MEM   ${alignr}CPU
+${top name 1} $alignr${top mem 1} $alignr${top cpu 1}
+${top name 2} $alignr${top mem 2} $alignr${top cpu 2}
+${top name 3} $alignr${top mem 3} $alignr${top cpu 3}
+${top name 4} $alignr${top mem 4} $alignr${top cpu 4}
+$stippled_hr
+${top_mem name 1} $alignr${top_mem cpu 1} $alignr${top_mem mem 1}
+${top_mem name 2} $alignr${top_mem cpu 2} $alignr${top_mem mem 2}
+${top_mem name 3} $alignr${top_mem cpu 3} $alignr${top_mem mem 3}
+${top_mem name 4} $alignr${top_mem cpu 4} $alignr${top_mem mem 4}
+
+${font ConkySymbols:size=12}K${font} 
+#${font size=10:style=Bold} SABİTDİSK»${font}
+Root    : ${fs_bar 6,75 /}  ${fs_used /}/${fs_size /}-${fs_used_perc /}%
+Home : ${fs_bar 6,75 /home}  ${fs_used /home}/${fs_size /home}-${fs_used_perc /home}%
+VRBM: ${if_mounted /media/VERBATIM}${fs_bar 6,75 /media/VERBATIM}$alignr${fs_used /media/VERBATIM}/${fs_size /media/VERBATIM}-${fs_used_perc /media/VERBATIM}% ${else} Bağlı Değil${endif}
+Segat:  ${if_mounted /media/Seagate1}${fs_bar 6,75 /media/Seagate1}$alignr${fs_used /media/Seagate1}/${fs_size /media/Seagate1}-${fs_used_perc /media/Seagate1}% ${else} Bağlı Değil${endif}
+
+${font ConkySymbols:size=12}I${font} $alignr${execi 60 ~/scripts/ip.sh}
+#${font size=10:style=Bold} AĞ»${font}
+# Download: $alignr${downspeed eth0}
+# Upload: $alignr${upspeed eth0}
+Net Down: ${downspeed eth0} k/s     	 $alignr Net Up: ${upspeed eth0} k/s
+${downspeedgraph eth0 32,105 FF6600 f2f2f2} $alignr${upspeedgraph eth0 32,105 FF6600 f2f2f2}
+Total Download: $alignr${totaldown eth0} 
+Total Upload: $alignr${totalup eth0}
+
+#${color orange}LOGGING ${hr 2}$color
+#${execi 70 tail -n3 /var/log/messages | fold -w50}
+
+#${color orange}FORTUNE ${hr 2}$color
+#${execi 120 fortune -s | fold -w50}
